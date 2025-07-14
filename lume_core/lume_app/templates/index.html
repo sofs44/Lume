@@ -1,0 +1,326 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lume - Página Inicial{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-background"></div>
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6">
+                <div class="hero-content">
+                    <h1 class="hero-title">{{ frase }}</h1>
+                    <p class="hero-subtitle">Uma plataforma de apoio emocional e reinserção social para sua jornada de recuperação</p>
+                    <div class="hero-buttons">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'diario' %}" class="btn btn-primary-custom">Meu Diário</a>
+                            <a href="{% url 'metas' %}" class="btn btn-outline-custom">Minhas Metas</a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-primary-custom">Começar Agora</a>
+                            <a href="#como-funciona" class="btn btn-outline-custom">Como Funciona</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <div class="floating-card card-1">
+                        <i class="fas fa-heart"></i>
+                        <span>Apoio Emocional</span>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fas fa-users"></i>
+                        <span>Comunidade</span>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Progresso</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Funcionalidades Principais -->
+<section class="features-section">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Suas ferramentas de apoio</h2>
+            <p>Recursos desenvolvidos especialmente para sua jornada de recuperação</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card" onclick="location.href='{% url 'diario' %}'">
+                    <div class="feature-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Diário Pessoal</h3>
+                    <p>Registre seus pensamentos, sentimentos e progresso diário em um espaço seguro e privado.</p>
+                    <div class="feature-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card" onclick="location.href='{% url 'metas' %}'">
+                    <div class="feature-icon">
+                        <i class="fas fa-target"></i>
+                    </div>
+                    <h3>Metas e Check-in</h3>
+                    <p>Defina objetivos alcançáveis e acompanhe seu humor e progresso emocional diariamente.</p>
+                    <div class="feature-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card" onclick="location.href='{% url 'chat' %}'">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Chat de Apoio</h3>
+                    <p>Converse com nossa equipe de suporte sempre que precisar de orientação ou apoio emocional.</p>
+                    <div class="feature-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card" onclick="location.href='{% url 'conteudo' %}'">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Conteúdo Educativo</h3>
+                    <p>Acesse informações confiáveis sobre dependência, tratamento e estratégias de recuperação.</p>
+                    <div class="feature-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3>Acompanhamento Profissional</h3>
+                    <p>Conecte-se com psicólogos especializados para um acompanhamento personalizado.</p>
+                    <div class="feature-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Ambiente Seguro</h3>
+                    <p>Seus dados são protegidos e sua privacidade é nossa prioridade em todos os momentos.</p>
+                    <div class="feature-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Como Funciona -->
+<section id="como-funciona" class="how-it-works-section">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Como funciona o Lume</h2>
+            <p>Um processo simples e eficaz para apoiar sua recuperação</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h4>Cadastre-se</h4>
+                    <p>Crie sua conta e escolha se você é paciente ou profissional da saúde.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h4>Defina Metas</h4>
+                    <p>Estabeleça objetivos diários e semanais para sua jornada de recuperação.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Acompanhe Progresso</h4>
+                    <p>Use o diário e check-ins para monitorar seu desenvolvimento emocional.</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h4>Receba Apoio</h4>
+                    <p>Conecte-se com profissionais e nossa comunidade de apoio quando precisar.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Depoimentos -->
+<section class="testimonials-section">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2>Histórias de superação</h2>
+            <p>Veja como o Lume tem ajudado pessoas em sua jornada de recuperação</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"O Lume me deu as ferramentas que eu precisava para organizar meus pensamentos e acompanhar meu progresso. O diário se tornou meu melhor amigo."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h5>Maria S.</h5>
+                            <span>6 meses em recuperação</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"A conexão com meu psicólogo através da plataforma facilitou muito meu tratamento. Posso compartilhar meu progresso em tempo real."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h5>João P.</h5>
+                            <span>1 ano em recuperação</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"As metas diárias me ajudaram a criar uma rotina saudável. Cada pequena conquista é celebrada e isso faz toda a diferença."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="author-info">
+                            <h5>Ana L.</h5>
+                            <span>8 meses em recuperação</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2>Pronto para começar sua jornada?</h2>
+                <p>Junte-se a centenas de pessoas que já estão transformando suas vidas com o apoio do Lume.</p>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'login' %}" class="btn btn-primary-custom btn-lg">Começar Agora</a>
+                {% else %}
+                    <a href="{% url 'metas' %}" class="btn btn-primary-custom btn-lg">Acessar Minhas Ferramentas</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+// Smooth scrolling para links internos
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Animação dos cards flutuantes
+function animateFloatingCards() {
+    const cards = document.querySelectorAll('.floating-card');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.5}s`;
+    });
+}
+
+// Intersection Observer para animações
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+        }
+    });
+}, observerOptions);
+
+// Observar elementos para animação
+document.addEventListener('DOMContentLoaded', function() {
+    const animateElements = document.querySelectorAll('.feature-card, .step-card, .testimonial-card');
+    animateElements.forEach(el => observer.observe(el));
+    
+    animateFloatingCards();
+});
+</script>
+{% endblock %}
+

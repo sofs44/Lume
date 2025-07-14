@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lume - Chat de Apoio{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/chat.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="chat-info">
+            <div class="avatar">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <div class="info">
+                <h3>Equipe de Apoio Lume</h3>
+                <span class="status online">Online</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="chat-messages" id="chatMessages">
+        <div class="message received">
+            <div class="message-avatar">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-bubble">
+                    <p>Olá! Bem-vindo ao chat de apoio do Lume. Como posso ajudá-lo hoje?</p>
+                    <span class="message-time">14:30</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="message received">
+            <div class="message-avatar">
+                <i class="fas fa-user-md"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-bubble">
+                    <p>Estou aqui para oferecer suporte emocional e orientação. Sinta-se à vontade para compartilhar o que está sentindo.</p>
+                    <span class="message-time">14:31</span>
+                </div>
+            </div>
+        </div>
+        
+        {% for mensagem in mensagens %}
+        <div class="message {% if mensagem.remetente == user %}sent{% else %}received{% endif %}">
+            <div class="message-avatar">
+                <i class="fas {% if mensagem.remetente == user %}fa-user{% else %}fa-user-md{% endif %}"></i>
+            </div>
+            <div class="message-content">
+                <div class="message-bubble">
+                    <p>{{ mensagem.texto }}</p>
+                    <span class="message-time">{{ mensagem.timestamp|date:"H:i" }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="chat-input">
+        <form id="chatForm" class="input-form">
+            <div class="input-wrapper">
+                <input type="text" id="messageInput" placeholder="Digite sua mensagem..." autocomplete="off">
+                <button type="submit" class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </form>
+        
+        <div class="quick-responses">
+            <button class="quick-btn" onclick="sendQuickMessage('Preciso de ajuda')">
+                Preciso de ajuda
+            </button>
+            <button class="quick-btn" onclick="sendQuickMessage('Como posso melhorar?')">
+                Como posso melhorar?
+            </button>
+            <button class="quick-btn" onclick="sendQuickMessage('Obrigado pelo apoio')">
+                Obrigado pelo apoio
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatMessages = document.getElementById('chatMessages');
+    const chatForm = document.getElementById('chatForm');
+    const messageInput = document.getElementById('messageInput');
+    
+    // Scroll para o final das mensagens
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Enviar mensagem
+    chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const message = messageInput.value.trim();
+        if (message) {
+            addMessage(message, 'sent');
+            messageInput.value = '';
+            
+            // Simular resposta automática
+            setTimeout(() => {
+                const responses = [
+                    'Entendo como você se sente. Você não está sozinho nessa jornada.',
+                    'Obrigado por compartilhar isso comigo. Como posso ajudá-lo melhor?',
+                    'Seus sentimentos são válidos. Vamos trabalhar juntos para encontrar soluções.',
+                    'Lembre-se: cada pequeno passo é um progresso. Você está indo bem!'
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'received');
+            }, 1500);
+        }
+    });
+});
+
+function addMessage(text, type) {
+    const chatMessages = document.getElementById('chatMessages');
+    const now = new Date();
+    const time = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}`;
+    messageDiv.innerHTML = `
+        <div class="message-avatar">
+            <i class="fas ${type === 'sent' ? 'fa-user' : 'fa-user-md'}"></i>
+        </div>
+        <div class="message-content">
+            <div class="message-bubble">
+                <p>${text}</p>
+                <span class="message-time">${time}</span>
+            </div>
+        </div>
+    `;
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function sendQuickMessage(message) {
+    document.getElementById('messageInput').value = message;
+    document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+}
+</script>
+{% endblock %}
+

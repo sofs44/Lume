@@ -1,0 +1,249 @@
+/* === CHAT STYLES === */
+.chat-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: linear-gradient(135deg, #ABD977 0%, #9BC765 100%);
+    padding: 20px;
+    color: white;
+}
+
+.chat-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.info h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.status {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.status.online::before {
+    content: '●';
+    color: #4CAF50;
+    margin-right: 5px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+.message {
+    display: flex;
+    margin-bottom: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.message.sent {
+    flex-direction: row-reverse;
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    margin: 0 10px;
+    flex-shrink: 0;
+}
+
+.message.received .message-avatar {
+    background: #ABD977;
+    color: white;
+}
+
+.message.sent .message-avatar {
+    background: #6c757d;
+    color: white;
+}
+
+.message-content {
+    max-width: 70%;
+}
+
+.message-bubble {
+    background: white;
+    padding: 15px;
+    border-radius: 18px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.message.sent .message-bubble {
+    background: #ABD977;
+    color: white;
+}
+
+.message-bubble p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.message-time {
+    font-size: 12px;
+    opacity: 0.7;
+    display: block;
+    margin-top: 5px;
+}
+
+.chat-input {
+    padding: 20px;
+    background: white;
+    border-top: 1px solid #e9ecef;
+}
+
+.input-form {
+    margin-bottom: 15px;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.input-wrapper input {
+    flex: 1;
+    padding: 15px 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-wrapper input:focus {
+    border-color: #ABD977;
+}
+
+.send-btn {
+    width: 50px;
+    height: 50px;
+    background: #ABD977;
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.send-btn:hover {
+    background: #9BC765;
+    transform: scale(1.05);
+}
+
+.quick-responses {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.quick-btn {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quick-btn:hover {
+    background: #ABD977;
+    color: white;
+    border-color: #ABD977;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+    .chat-container {
+        height: calc(100vh - 150px);
+        margin: 10px;
+        border-radius: 10px;
+    }
+    
+    .message-content {
+        max-width: 85%;
+    }
+    
+    .quick-responses {
+        justify-content: center;
+    }
+    
+    .quick-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .chat-header {
+        padding: 15px;
+    }
+    
+    .chat-messages {
+        padding: 15px;
+    }
+    
+    .chat-input {
+        padding: 15px;
+    }
+    
+    .input-wrapper input {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    .send-btn {
+        width: 45px;
+        height: 45px;
+    }
+}
+

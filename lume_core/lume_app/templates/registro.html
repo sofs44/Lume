@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lume - Registro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/registro.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="registro-container">
+    <div class="registro-card">
+        <div class="registro-header">
+            <h1><i class="fas fa-user-plus"></i> Criar Conta</h1>
+            <p>Junte-se à nossa comunidade de apoio e recuperação</p>
+        </div>
+        
+        <form method="post" class="registro-form" id="registroForm">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <p><strong>{{ field }}:</strong> {{ error }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <!-- Seleção de Tipo de Usuário -->
+            <div class="form-section">
+                <h3><i class="fas fa-users"></i> Tipo de Usuário</h3>
+                <div class="tipo-selector">
+                    <div class="tipo-option">
+                        <input type="radio" id="tipo_paciente" name="tipo" value="paciente" required>
+                        <label for="tipo_paciente" class="tipo-card">
+                            <div class="tipo-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h4>Paciente</h4>
+                            <p>Busco apoio em minha jornada de recuperação</p>
+                        </label>
+                    </div>
+                    
+                    <div class="tipo-option">
+                        <input type="radio" id="tipo_psicologo" name="tipo" value="psicologo" required>
+                        <label for="tipo_psicologo" class="tipo-card">
+                            <div class="tipo-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h4>Psicólogo</h4>
+                            <p>Sou um profissional que oferece apoio terapêutico</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dados Pessoais -->
+            <div class="form-section">
+                <h3><i class="fas fa-user"></i> Dados Pessoais</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                            {{ form.first_name }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                            {{ form.email }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.telefone.id_for_label }}">{{ form.telefone.label }}</label>
+                            {{ form.telefone }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.data_nascimento.id_for_label }}">{{ form.data_nascimento.label }}</label>
+                    {{ form.data_nascimento }}
+                </div>
+            </div>
+            
+            <!-- Dados de Acesso -->
+            <div class="form-section">
+                <h3><i class="fas fa-key"></i> Dados de Acesso</h3>
+                <div class="form-group">
+                    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                    {{ form.username }}
+                    <small class="form-text text-muted">{{ form.username.help_text }}</small>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                            {{ form.password1 }}
+                            <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                            {{ form.password2 }}
+                            <small class="form-text text-muted">{{ form.password2.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Campos específicos para psicólogos -->
+            <div class="form-section psicologo-fields" id="psicologoFields" style="display: none;">
+                <h3><i class="fas fa-graduation-cap"></i> Dados Profissionais</h3>
+                <div class="form-group">
+                    <label for="{{ form.registro_crp.id_for_label }}">{{ form.registro_crp.label }} <span class="required">*</span></label>
+                    {{ form.registro_crp }}
+                    <small class="form-text text-muted">{{ form.registro_crp.help_text }}</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.especialidades.id_for_label }}">{{ form.especialidades.label }}</label>
+                    {{ form.especialidades }}
+                    <small class="form-text text-muted">{{ form.especialidades.help_text }}</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.biografia.id_for_label }}">{{ form.biografia.label }}</label>
+                    {{ form.biografia }}
+                    <small class="form-text text-muted">{{ form.biografia.help_text }}</small>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary-custom">
+                    <i class="fas fa-user-plus"></i> Criar Conta
+                </button>
+                <a href="{% url 'login' %}" class="btn btn-outline-custom">
+                    <i class="fas fa-sign-in-alt"></i> Já tenho conta
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tipoRadios = document.querySelectorAll('input[name="tipo"]');
+    const psicologoFields = document.getElementById('psicologoFields');
+    const registroCrpField = document.getElementById('id_registro_crp');
+    
+    // Função para mostrar/ocultar campos de psicólogo
+    function togglePsicologoFields() {
+        const selectedTipo = document.querySelector('input[name="tipo"]:checked');
+        
+        if (selectedTipo && selectedTipo.value === 'psicologo') {
+            psicologoFields.style.display = 'block';
+            registroCrpField.required = true;
+            
+            // Animação suave
+            psicologoFields.style.opacity = '0';
+            psicologoFields.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                psicologoFields.style.transition = 'all 0.3s ease';
+                psicologoFields.style.opacity = '1';
+                psicologoFields.style.transform = 'translateY(0)';
+            }, 10);
+        } else {
+            psicologoFields.style.display = 'none';
+            registroCrpField.required = false;
+        }
+    }
+    
+    // Adicionar event listeners
+    tipoRadios.forEach(radio => {
+        radio.addEventListener('change', togglePsicologoFields);
+    });
+    
+    // Verificar estado inicial
+    togglePsicologoFields();
+    
+    // Validação do formulário
+    const form = document.getElementById('registroForm');
+    form.addEventListener('submit', function(e) {
+        const selectedTipo = document.querySelector('input[name="tipo"]:checked');
+        
+        if (!selectedTipo) {
+            e.preventDefault();
+            alert('Por favor, selecione o tipo de usuário.');
+            return;
+        }
+        
+        if (selectedTipo.value === 'psicologo') {
+            const registroCrp = document.getElementById('id_registro_crp').value.trim();
+            if (!registroCrp) {
+                e.preventDefault();
+                alert('Registro CRP é obrigatório para psicólogos.');
+                return;
+            }
+        }
+    });
+    
+    // Efeito visual nos cards de tipo
+    const tipoCards = document.querySelectorAll('.tipo-card');
+    tipoCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remover seleção anterior
+            tipoCards.forEach(c => c.classList.remove('selected'));
+            // Adicionar seleção atual
+            this.classList.add('selected');
+        });
+    });
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lume - Conteúdo Terapêutico{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/conteudo.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="conteudo-wrapper">
+    <div class="conteudo-central">
+        <div class="content-header">
+            <h1>Conteúdo Terapêutico</h1>
+            <p class="subtitle">Informações e recursos para sua jornada de recuperação</p>
+        </div>
+        
+        <div class="content-sections">
+            <section class="content-card">
+                <div class="card-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>Entendendo a Dependência</h3>
+                <p>O vício em substâncias químicas é um desafio sério que afeta milhões de pessoas no mundo todo. As drogas atuam diretamente no sistema nervoso central, alterando o comportamento, humor e percepção.</p>
+                <p>É importante compreender que a dependência é uma doença, não uma falha de caráter. O cérebro se adapta à presença da substância, criando uma necessidade física e psicológica.</p>
+            </section>
+            
+            <section class="content-card">
+                <div class="card-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Caminhos para a Recuperação</h3>
+                <p>É importante buscar ajuda médica e psicológica para tratar dependência química. O tratamento pode envolver terapias, apoio familiar, grupos de apoio como o <a href="https://www.na.org.br" target="_blank" rel="noopener noreferrer">NA (Narcóticos Anônimos)</a>, e em alguns casos, internação.</p>
+                <p>Cada pessoa tem um caminho único de recuperação. O que funciona para uma pessoa pode não funcionar para outra, e isso é completamente normal.</p>
+            </section>
+            
+            <section class="content-card">
+                <div class="card-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Você Não Está Sozinho</h3>
+                <p>Você não está sozinho(a). Há caminhos possíveis e recuperação é totalmente possível com apoio e acompanhamento. Milhares de pessoas já passaram por essa jornada e encontraram uma vida plena e saudável.</p>
+                <p>O apoio da família, amigos e profissionais é fundamental. Não hesite em pedir ajuda quando precisar.</p>
+            </section>
+            
+            <section class="content-card">
+                <div class="card-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Dicas Práticas</h3>
+                <ul class="tips-list">
+                    <li>Mantenha uma rotina diária estruturada</li>
+                    <li>Pratique exercícios físicos regularmente</li>
+                    <li>Cultive hobbies e atividades prazerosas</li>
+                    <li>Evite situações e pessoas que possam ser gatilhos</li>
+                    <li>Pratique técnicas de relaxamento e meditação</li>
+                    <li>Mantenha contato regular com sua rede de apoio</li>
+                </ul>
+            </section>
+            
+            <section class="content-card emergency">
+                <div class="card-icon">
+                    <i class="fas fa-phone"></i>
+                </div>
+                <h3>Precisa de Ajuda Imediata?</h3>
+                <p>Se você está passando por uma crise ou precisa de ajuda imediata, não hesite em entrar em contato:</p>
+                <div class="emergency-contacts">
+                    <div class="contact-item">
+                        <strong><a href="https://www.cvv.org.br" target="_blank" rel="noopener noreferrer">CVV - Centro de Valorização da Vida</a></strong>
+                        <span>188 (24h, gratuito)</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong><a href="https://www.gov.br/saude/pt-br/assuntos/saude-de-a-a-z/s/saude-mental/caps" target="_blank" rel="noopener noreferrer">CAPS - Centro de Atenção Psicossocial</a></strong>
+                        <span>Procure a unidade mais próxima</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+{% endblock %}
+

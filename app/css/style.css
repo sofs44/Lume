@@ -1,0 +1,23 @@
+body {
+    padding-top: 56px; /* Altura da navbar fixa */
+    background-color: #f8f9fa; /* Cinza claro */
+}
+
+.navbar {
+    background-color: #ABD977 !important; /* Verde principal */
+}
+
+.footer {
+    background-color: #e9ecef; /* Cinza claro para o footer */
+    border-top: 1px solid #dee2e6;
+}
+
+.social-icons a {
+    color: #6c757d; /* Cor para os ícones sociais */
+}
+
+.social-icons a:hover {
+    color: #ABD977; /* Cor de hover para os ícones sociais */
+}
+
+

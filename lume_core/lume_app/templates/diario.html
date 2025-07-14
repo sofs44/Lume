@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lume - Diário Pessoal{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/diario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="diario-container">
+    <div class="page-header">
+        <h1>Meu Diário Pessoal</h1>
+        <p>Um espaço seguro para expressar seus pensamentos e sentimentos</p>
+    </div>
+    
+    <div class="diario-content">
+        <!-- Formulário para nova entrada -->
+        <div class="new-entry-section">
+            <div class="section-header">
+                <h2><i class="fas fa-pen"></i> Nova Entrada</h2>
+                <div class="entry-date">
+                    <i class="fas fa-calendar"></i>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+            
+            <form class="entry-form" onsubmit="saveEntry(event)">
+                <div class="mood-selector-mini">
+                    <label>Como você está se sentindo?</label>
+                    <div class="mood-options">
+                        <input type="radio" name="mood" value="muito-bem" id="mood1">
+                        <label for="mood1" class="mood-label">😊</label>
+                        
+                        <input type="radio" name="mood" value="bem" id="mood2">
+                        <label for="mood2" class="mood-label">🙂</label>
+                        
+                        <input type="radio" name="mood" value="neutro" id="mood3">
+                        <label for="mood3" class="mood-label">😐</label>
+                        
+                        <input type="radio" name="mood" value="mal" id="mood4">
+                        <label for="mood4" class="mood-label">😔</label>
+                        
+                        <input type="radio" name="mood" value="muito-mal" id="mood5">
+                        <label for="mood5" class="mood-label">😢</label>
+                    </div>
+                </div>
+                
+                <div class="text-area-wrapper">
+                    <textarea 
+                        id="entryText" 
+                        placeholder="Escreva sobre seu dia, seus sentimentos, pensamentos... Este é seu espaço seguro."
+                        rows="8"
+                        maxlength="2000"
+                    ></textarea>
+                    <div class="char-counter">
+                        <span id="charCount">0</span>/2000
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-draft" onclick="saveDraft()">
+                        <i class="fas fa-save"></i> Salvar Rascunho
+                    </button>
+                    <button type="submit" class="btn-publish">
+                        <i class="fas fa-check"></i> Publicar Entrada
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Entradas anteriores -->
+        <div class="entries-section">
+            <div class="section-header">
+                <h2><i class="fas fa-book"></i> Entradas Anteriores</h2>
+                <div class="filter-options">
+                    <select id="moodFilter" onchange="filterEntries()">
+                        <option value="all">Todos os humores</option>
+                        <option value="muito-bem">Muito bem 😊</option>
+                        <option value="bem">Bem 🙂</option>
+                        <option value="neutro">Neutro 😐</option>
+                        <option value="mal">Mal 😔</option>
+                        <option value="muito-mal">Muito mal 😢</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="entries-list" id="entriesList">
+                <!-- Entrada de exemplo -->
+                <div class="entry-item" data-mood="bem">
+                    <div class="entry-header">
+                        <div class="entry-date-mood">
+                            <span class="entry-date">13 de Julho, 2024</span>
+                            <span class="entry-mood">🙂</span>
+                        </div>
+                        <div class="entry-actions">
+                            <button class="btn-edit-entry" onclick="editEntry(this)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-delete-entry" onclick="deleteEntry(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="entry-content">
+                        <p>Hoje foi um dia melhor. Consegui fazer minha caminhada matinal e me senti mais disposto. A terapia está ajudando muito, e estou começando a ver pequenos progressos. Ainda há desafios, mas sinto que estou no caminho certo.</p>
+                    </div>
+                </div>
+                
+                <div class="entry-item" data-mood="neutro">
+                    <div class="entry-header">
+                        <div class="entry-date-mood">
+                            <span class="entry-date">12 de Julho, 2024</span>
+                            <span class="entry-mood">😐</span>
+                        </div>
+                        <div class="entry-actions">
+                            <button class="btn-edit-entry" onclick="editEntry(this)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-delete-entry" onclick="deleteEntry(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="entry-content">
+                        <p>Dia comum. Não me senti nem bem nem mal, apenas neutro. Às vezes esses dias são necessários para processar tudo o que está acontecendo. Tentei meditar um pouco e ajudou a acalmar a mente.</p>
+                    </div>
+                </div>
+                
+                <div class="entry-item" data-mood="muito-bem">
+                    <div class="entry-header">
+                        <div class="entry-date-mood">
+                            <span class="entry-date">11 de Julho, 2024</span>
+                            <span class="entry-mood">😊</span>
+                        </div>
+                        <div class="entry-actions">
+                            <button class="btn-edit-entry" onclick="editEntry(this)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-delete-entry" onclick="deleteEntry(this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="entry-content">
+                        <p>Que dia incrível! Consegui completar todas as minhas metas e ainda tive energia para ajudar um amigo. Sinto que estou realmente progredindo na minha jornada. A gratidão que sinto hoje é imensa.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="load-more">
+                <button class="btn-load-more" onclick="loadMoreEntries()">
+                    <i class="fas fa-chevron-down"></i> Carregar mais entradas
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Definir data atual
+    const now = new Date();
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    document.getElementById('currentDate').textContent = now.toLocaleDateString('pt-BR', options);
+    
+    // Contador de caracteres
+    const textarea = document.getElementById('entryText');
+    const charCount = document.getElementById('charCount');
+    
+    textarea.addEventListener('input', function() {
+        charCount.textContent = this.value.length;
+        
+        if (this.value.length > 1800) {
+            charCount.style.color = '#dc3545';
+        } else if (this.value.length > 1500) {
+            charCount.style.color = '#ffc107';
+        } else {
+            charCount.style.color = '#6c757d';
+        }
+    });
+});
+
+function saveEntry(event) {
+    event.preventDefault();
+    
+    const mood = document.querySelector('input[name="mood"]:checked');
+    const text = document.getElementById('entryText').value.trim();
+    
+    if (!mood) {
+        alert('Por favor, selecione como você está se sentindo.');
+        return;
+    }
+    
+    if (!text) {
+        alert('Por favor, escreva algo em seu diário.');
+        return;
+    }
+    
+    // Simular salvamento
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('pt-BR', { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric' 
+    });
+    
+    const moodEmojis = {
+        'muito-bem': '😊',
+        'bem': '🙂',
+        'neutro': '😐',
+        'mal': '😔',
+        'muito-mal': '😢'
+    };
+    
+    const newEntry = document.createElement('div');
+    newEntry.className = 'entry-item';
+    newEntry.setAttribute('data-mood', mood.value);
+    newEntry.innerHTML = `
+        <div class="entry-header">
+            <div class="entry-date-mood">
+                <span class="entry-date">${dateStr}</span>
+                <span class="entry-mood">${moodEmojis[mood.value]}</span>
+            </div>
+            <div class="entry-actions">
+                <button class="btn-edit-entry" onclick="editEntry(this)">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-delete-entry" onclick="deleteEntry(this)">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="entry-content">
+            <p>${text}</p>
+        </div>
+    `;
+    
+    const entriesList = document.getElementById('entriesList');
+    entriesList.insertBefore(newEntry, entriesList.firstChild);
+    
+    // Limpar formulário
+    document.getElementById('entryText').value = '';
+    document.getElementById('charCount').textContent = '0';
+    document.querySelector('input[name="mood"]:checked').checked = false;
+    
+    // Feedback visual
+    const button = event.target.querySelector('.btn-publish');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-check"></i> Salvo!';
+    button.style.background = '#28a745';
+    
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.style.background = '';
+    }, 2000);
+}
+
+function saveDraft() {
+    const text = document.getElementById('entryText').value.trim();
+    
+    if (!text) {
+        alert('Não há nada para salvar como rascunho.');
+        return;
+    }
+    
+    // Simular salvamento de rascunho
+    localStorage.setItem('diario_rascunho', text);
+    
+    const button = document.querySelector('.btn-draft');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-check"></i> Rascunho Salvo!';
+    button.style.background = '#28a745';
+    
+    setTimeout(() => {
+        button.innerHTML = originalText;
+        button.style.background = '';
+    }, 2000);
+}
+
+function editEntry(button) {
+    const entryContent = button.closest('.entry-item').querySelector('.entry-content p');
+    const currentText = entryContent.textContent;
+    const newText = prompt('Editar entrada:', currentText);
+    
+    if (newText && newText.trim()) {
+        entryContent.textContent = newText.trim();
+    }
+}
+
+function deleteEntry(button) {
+    if (confirm('Tem certeza que deseja excluir esta entrada? Esta ação não pode ser desfeita.')) {
+        button.closest('.entry-item').remove();
+    }
+}
+
+function filterEntries() {
+    const filter = document.getElementById('moodFilter').value;
+    const entries = document.querySelectorAll('.entry-item');
+    
+    entries.forEach(entry => {
+        if (filter === 'all' || entry.getAttribute('data-mood') === filter) {
+            entry.style.display = 'block';
+        } else {
+            entry.style.display = 'none';
+        }
+    });
+}
+
+function loadMoreEntries() {
+    // Simular carregamento de mais entradas
+    const button = document.querySelector('.btn-load-more');
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
+    
+    setTimeout(() => {
+        button.innerHTML = '<i class="fas fa-chevron-down"></i> Carregar mais entradas';
+        alert('Não há mais entradas para carregar.');
+    }, 1500);
+}
+
+// Carregar rascunho salvo
+window.addEventListener('load', function() {
+    const savedDraft = localStorage.getItem('diario_rascunho');
+    if (savedDraft) {
+        document.getElementById('entryText').value = savedDraft;
+        document.getElementById('charCount').textContent = savedDraft.length;
+    }
+});
+</script>
+{% endblock %}
+

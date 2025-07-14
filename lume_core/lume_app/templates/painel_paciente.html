@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lume - Meu Painel{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/painel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="painel-container">
+    <div class="painel-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-heart"></i> Meu Painel</h1>
+                    <p>Olá, {{ user.first_name }}! Como você está se sentindo hoje?</p>
+                </div>
+                <div class="col-md-4 text-right">
+                    <div class="mood-quick-check">
+                        <span>Humor de hoje:</span>
+                        <div class="mood-selector-mini">
+                            <button class="mood-btn" data-mood="muito-bem" title="Muito bem">😊</button>
+                            <button class="mood-btn" data-mood="bem" title="Bem">🙂</button>
+                            <button class="mood-btn" data-mood="neutro" title="Neutro">😐</button>
+                            <button class="mood-btn" data-mood="mal" title="Mal">😔</button>
+                            <button class="mood-btn" data-mood="muito-mal" title="Muito mal">😢</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <!-- Ferramentas Principais -->
+            <div class="col-lg-8">
+                <div class="card-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-tools"></i> Suas Ferramentas</h2>
+                    </div>
+                    
+                    <div class="tools-grid">
+                        <a href="{% url 'diario' %}" class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div class="tool-content">
+                                <h3>Diário Pessoal</h3>
+                                <p>Registre seus pensamentos e sentimentos</p>
+                                <div class="tool-stats">
+                                    <span>{{ total_diarios }} registros</span>
+                                </div>
+                            </div>
+                            <div class="tool-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="{% url 'metas' %}" class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-target"></i>
+                            </div>
+                            <div class="tool-content">
+                                <h3>Metas e Check-in</h3>
+                                <p>Acompanhe seu progresso diário</p>
+                                <div class="tool-stats">
+                                    <span>{{ metas_ativas }} metas ativas</span>
+                                </div>
+                            </div>
+                            <div class="tool-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="{% url 'conteudo' %}" class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="tool-content">
+                                <h3>Conteúdo Educativo</h3>
+                                <p>Aprenda sobre recuperação e bem-estar</p>
+                                <div class="tool-stats">
+                                    <span>Sempre atualizado</span>
+                                </div>
+                            </div>
+                            <div class="tool-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                        
+                        <a href="{% url 'chat' %}" class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="tool-content">
+                                <h3>Chat de Apoio</h3>
+                                <p>Converse quando precisar de suporte</p>
+                                <div class="tool-stats">
+                                    <span>Disponível 24h</span>
+                                </div>
+                            </div>
+                            <div class="tool-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Progresso Recente -->
+                <div class="card-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-chart-line"></i> Seu Progresso</h2>
+                    </div>
+                    
+                    <div class="progress-overview">
+                        <div class="progress-item">
+                            <div class="progress-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="progress-content">
+                                <h4>Check-ins esta semana</h4>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ checkins_semana_percent }}%"></div>
+                                </div>
+                                <span>{{ checkins_semana }}/7 dias</span>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="progress-content">
+                                <h4>Metas concluídas</h4>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ metas_concluidas_percent }}%"></div>
+                                </div>
+                                <span>{{ metas_concluidas }}/{{ total_metas }} metas</span>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-item">
+                            <div class="progress-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="progress-content">
+                                <h4>Registros no diário</h4>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: {{ diarios_semana_percent }}%"></div>
+                                </div>
+                                <span>{{ diarios_semana }} esta semana</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Psicólogo Responsável -->
+                {% if psicologo_responsavel %}
+                <div class="card-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-user-md"></i> Seu Psicólogo</h3>
+                    </div>
+                    
+                    <div class="psicologo-card">
+                        <div class="psicologo-avatar">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <div class="psicologo-info">
+                            <h4>{{ psicologo_responsavel.first_name }} {{ psicologo_responsavel.last_name }}</h4>
+                            <p>{{ psicologo_responsavel.dados_psicologo.especialidades|default:"Psicólogo especialista" }}</p>
+                        </div>
+                        <div class="psicologo-actions">
+                            <button class="btn btn-primary-custom btn-sm" onclick="enviarMensagemPsicologo()">
+                                <i class="fas fa-envelope"></i> Enviar Mensagem
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Mensagens Recentes -->
+                <div class="card-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-envelope"></i> Mensagens</h3>
+                        {% if psicologo_responsavel %}
+                        <button class="btn btn-outline-custom btn-sm" onclick="verTodasMensagens()">
+                            Ver todas
+                        </button>
+                        {% endif %}
+                    </div>
+                    
+                    {% if mensagens_recentes %}
+                        <div class="mensagens-recentes">
+                            {% for mensagem in mensagens_recentes %}
+                            <div class="mensagem-item">
+                                <div class="mensagem-header">
+                                    <span class="remetente">{{ mensagem.remetente.first_name }}</span>
+                                    <span class="timestamp">{{ mensagem.timestamp|date:"d/m H:i" }}</span>
+                                </div>
+                                <p class="mensagem-texto">{{ mensagem.texto|truncatechars:100 }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-messages">
+                            <i class="fas fa-envelope-open"></i>
+                            <p>Nenhuma mensagem ainda</p>
+                            {% if psicologo_responsavel %}
+                            <button class="btn btn-primary-custom btn-sm" onclick="enviarMensagemPsicologo()">
+                                Enviar primeira mensagem
+                            </button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Frase Motivacional -->
+                <div class="card-section motivational-card">
+                    <div class="section-header">
+                        <h3><i class="fas fa-quote-left"></i> Inspiração</h3>
+                    </div>
+                    
+                    <div class="frase-motivacional">
+                        <p>"{{ frase_motivacional }}"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+// Seletor de humor rápido
+document.querySelectorAll('.mood-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const mood = this.dataset.mood;
+        
+        // Remover seleção anterior
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+        
+        // Adicionar seleção atual
+        this.classList.add('selected');
+        
+        // Salvar humor via AJAX
+        fetch('/paciente/salvar-humor/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({mood: mood})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Feedback visual
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            }
+        })
+        .catch(error => console.error('Erro ao salvar humor:', error));
+    });
+});
+
+function enviarMensagemPsicologo() {
+    {% if psicologo_responsavel %}
+    window.location.href = '/paciente/mensagens/{{ psicologo_responsavel.id }}/';
+    {% else %}
+    alert('Você ainda não tem um psicólogo atribuído.');
+    {% endif %}
+}
+
+function verTodasMensagens() {
+    {% if psicologo_responsavel %}
+    window.location.href = '/paciente/mensagens/';
+    {% else %}
+    alert('Você ainda não tem mensagens.');
+    {% endif %}
+}
+
+// Animação dos cards de ferramentas
+document.querySelectorAll('.tool-card').forEach(card => {
+    card.addEventListener('mouseenter', function() {
+        this.style.transform = 'translateY(-5px) scale(1.02)';
+    });
+    
+    card.addEventListener('mouseleave', function() {
+        this.style.transform = '';
+    });
+});
+</script>
+{% endblock %}
+

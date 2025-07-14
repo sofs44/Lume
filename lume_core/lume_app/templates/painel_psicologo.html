@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lume - Painel do Psicólogo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/css/painel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="painel-container">
+    <div class="painel-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-user-md"></i> Painel do Psicólogo</h1>
+                    <p>Bem-vindo, Dr(a). {{ user.first_name }} {{ user.last_name }}</p>
+                </div>
+                <div class="col-md-4 text-right">
+                    <div class="stats-quick">
+                        <div class="stat-item">
+                            <span class="stat-number">{{ pacientes.count }}</span>
+                            <span class="stat-label">Pacientes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="row">
+            <!-- Lista de Pacientes -->
+            <div class="col-lg-8">
+                <div class="card-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> Meus Pacientes</h2>
+                        <button class="btn btn-primary-custom" data-toggle="modal" data-target="#adicionarPacienteModal">
+                            <i class="fas fa-plus"></i> Adicionar Paciente
+                        </button>
+                    </div>
+                    
+                    {% if pacientes %}
+                        <div class="pacientes-grid">
+                            {% for conexao in pacientes %}
+                                <div class="paciente-card" data-paciente-id="{{ conexao.paciente.id }}">
+                                    <div class="paciente-header">
+                                        <div class="paciente-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div class="paciente-info">
+                                            <h4>{{ conexao.paciente.first_name }} {{ conexao.paciente.last_name }}</h4>
+                                            <span class="paciente-status">
+                                                <i class="fas fa-circle"></i> Ativo desde {{ conexao.data_conexao|date:"d/m/Y" }}
+                                            </span>
+                                        </div>
+                                        <div class="paciente-actions">
+                                            <button class="btn-action" onclick="verFicha({{ conexao.paciente.id }})" title="Ver Ficha">
+                                                <i class="fas fa-file-medical"></i>
+                                            </button>
+                                            <button class="btn-action" onclick="enviarMensagem({{ conexao.paciente.id }})" title="Enviar Mensagem">
+                                                <i class="fas fa-envelope"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="paciente-stats">
+                                        <div class="stat">
+                                            <span class="stat-value">{{ conexao.paciente.registros_diario.count }}</span>
+                                            <span class="stat-name">Registros</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">{{ conexao.paciente.metas_recebidas.count }}</span>
+                                            <span class="stat-name">Metas</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value">{{ conexao.paciente.checkins_emocionais.count }}</span>
+                                            <span class="stat-name">Check-ins</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="paciente-progress">
+                                        <div class="progress-item">
+                                            <span>Última atividade:</span>
+                                            <span class="activity-date">
+                                                {% if conexao.paciente.registros_diario.first %}
+                                                    {{ conexao.paciente.registros_diario.first.data_criacao|date:"d/m/Y" }}
+                                                {% else %}
+                                                    Nenhuma atividade
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <h3>Nenhum paciente atribuído</h3>
+                            <p>Adicione pacientes para começar a acompanhar seu progresso.</p>
+                            <button class="btn btn-primary-custom" data-toggle="modal" data-target="#adicionarPacienteModal">
+                                <i class="fas fa-plus"></i> Adicionar Primeiro Paciente
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Sidebar com Ações Rápidas -->
+            <div class="col-lg-4">
+                <div class="card-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-bolt"></i> Ações Rápidas</h3>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <a href="#" class="quick-action-item" onclick="criarMeta()">
+                            <div class="action-icon">
+                                <i class="fas fa-target"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>Criar Meta</h4>
+                                <p>Definir nova meta terapêutica</p>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="quick-action-item" onclick="verMensagens()">
+                            <div class="action-icon">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>Mensagens</h4>
+                                <p>Ver conversas com pacientes</p>
+                            </div>
+                        </a>
+                        
+                        <a href="#" class="quick-action-item" onclick="gerarRelatorio()">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="action-content">
+                                <h4>Relatórios</h4>
+                                <p>Gerar relatório de progresso</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Estatísticas Gerais -->
+                <div class="card-section">
+                    <div class="section-header">
+                        <h3><i class="fas fa-chart-pie"></i> Estatísticas</h3>
+                    </div>
+                    
+                    <div class="stats-overview">
+                        <div class="stat-overview-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number">{{ total_checkins }}</span>
+                                <span class="stat-label">Check-ins esta semana</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-overview-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number">{{ total_diarios }}</span>
+                                <span class="stat-label">Registros de diário</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-overview-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number">{{ metas_concluidas }}</span>
+                                <span class="stat-label">Metas concluídas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Adicionar Paciente -->
+<div class="modal fade" id="adicionarPacienteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Paciente</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="adicionarPacienteForm">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="pacienteSelect">Selecionar Paciente:</label>
+                        <select class="form-control" id="pacienteSelect" name="paciente_id" required>
+                            <option value="">Escolha um paciente...</option>
+                            {% for paciente in pacientes_disponiveis %}
+                                <option value="{{ paciente.id }}">{{ paciente.first_name }} {{ paciente.last_name }} ({{ paciente.username }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary-custom" onclick="adicionarPaciente()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Ficha do Paciente -->
+<div class="modal fade" id="fichaPacienteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ficha do Paciente</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="fichaPacienteContent">
+                <!-- Conteúdo carregado via AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+function verFicha(pacienteId) {
+    // Carregar ficha do paciente via AJAX
+    fetch(`/psicologo/ficha-paciente/${pacienteId}/`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('fichaPacienteContent').innerHTML = html;
+            $('#fichaPacienteModal').modal('show');
+        })
+        .catch(error => {
+            console.error('Erro ao carregar ficha:', error);
+            alert('Erro ao carregar ficha do paciente.');
+        });
+}
+
+function enviarMensagem(pacienteId) {
+    // Redirecionar para página de mensagens
+    window.location.href = `/psicologo/mensagens/${pacienteId}/`;
+}
+
+function adicionarPaciente() {
+    const form = document.getElementById('adicionarPacienteForm');
+    const formData = new FormData(form);
+    
+    fetch('/psicologo/adicionar-paciente/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message || 'Erro ao adicionar paciente.');
+        }
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao adicionar paciente.');
+    });
+}
+
+function criarMeta() {
+    // Implementar criação de meta
+    alert('Funcionalidade em desenvolvimento');
+}
+
+function verMensagens() {
+    // Redirecionar para página de mensagens
+    window.location.href = '/psicologo/mensagens/';
+}
+
+function gerarRelatorio() {
+    // Implementar geração de relatório
+    alert('Funcionalidade em desenvolvimento');
+}
+</script>
+{% endblock %}
+

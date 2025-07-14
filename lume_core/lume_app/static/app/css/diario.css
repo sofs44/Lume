@@ -1,0 +1,458 @@
+/* === DIÁRIO STYLES === */
+.diario-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.page-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #ABD977, #9BC765);
+}
+
+.page-header h1 {
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.page-header p {
+    color: #666;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.diario-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.new-entry-section,
+.entries-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.section-header h2 {
+    color: #333;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.section-header i {
+    color: #ABD977;
+    margin-right: 10px;
+}
+
+.entry-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 14px;
+}
+
+.entry-date i {
+    color: #ABD977;
+}
+
+/* === FORMULÁRIO DE NOVA ENTRADA === */
+.entry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.mood-selector-mini label {
+    display: block;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.mood-options {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.mood-options input[type="radio"] {
+    display: none;
+}
+
+.mood-label {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #e9ecef;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.mood-label:hover {
+    border-color: #ABD977;
+    background: #f0f8e8;
+    transform: scale(1.1);
+}
+
+.mood-options input[type="radio"]:checked + .mood-label {
+    border-color: #ABD977;
+    background: linear-gradient(135deg, #ABD977, #9BC765);
+    transform: scale(1.15);
+}
+
+.text-area-wrapper {
+    position: relative;
+}
+
+.text-area-wrapper textarea {
+    width: 100%;
+    padding: 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    font-size: 16px;
+    font-family: inherit;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 200px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    background: #f8f9fa;
+}
+
+.text-area-wrapper textarea:focus {
+    border-color: #ABD977;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(171, 217, 119, 0.1);
+}
+
+.char-counter {
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 12px;
+    color: #6c757d;
+    background: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+}
+
+.btn-draft,
+.btn-publish {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-draft {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-draft:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-publish {
+    background: linear-gradient(135deg, #ABD977, #9BC765);
+    color: white;
+}
+
+.btn-publish:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(171, 217, 119, 0.3);
+}
+
+/* === FILTRO === */
+.filter-options select {
+    padding: 8px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.filter-options select:focus {
+    border-color: #ABD977;
+}
+
+/* === LISTA DE ENTRADAS === */
+.entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.entry-item {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 25px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.entry-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(180deg, #ABD977, #9BC765);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.entry-item:hover::before {
+    transform: scaleY(1);
+}
+
+.entry-item:hover {
+    background: white;
+    border-color: #ABD977;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.entry-date-mood {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.entry-date-mood .entry-date {
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.entry-mood {
+    font-size: 20px;
+}
+
+.entry-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-edit-entry,
+.btn-delete-entry {
+    width: 35px;
+    height: 35px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.entry-item:hover .btn-edit-entry,
+.entry-item:hover .btn-delete-entry {
+    opacity: 1;
+}
+
+.btn-edit-entry {
+    background: #ffc107;
+    color: white;
+}
+
+.btn-edit-entry:hover {
+    background: #e0a800;
+    transform: scale(1.1);
+}
+
+.btn-delete-entry {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-delete-entry:hover {
+    background: #c82333;
+    transform: scale(1.1);
+}
+
+.entry-content p {
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    font-size: 16px;
+}
+
+/* === CARREGAR MAIS === */
+.load-more {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-load-more {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px 25px;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-load-more:hover {
+    background: #ABD977;
+    border-color: #ABD977;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+    .diario-container {
+        padding: 15px;
+    }
+    
+    .page-header,
+    .new-entry-section,
+    .entries-section {
+        padding: 25px 20px;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .mood-options {
+        gap: 10px;
+    }
+    
+    .mood-label {
+        width: 55px;
+        height: 55px;
+        font-size: 24px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-draft,
+    .btn-publish {
+        justify-content: center;
+    }
+    
+    .entry-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .entry-actions {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .page-header p {
+        font-size: 1rem;
+    }
+    
+    .new-entry-section,
+    .entries-section {
+        padding: 20px 15px;
+    }
+    
+    .text-area-wrapper textarea {
+        padding: 15px;
+        font-size: 14px;
+        min-height: 150px;
+    }
+    
+    .mood-options {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .mood-label {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+    
+    .entry-item {
+        padding: 20px 15px;
+    }
+    
+    .entry-content p {
+        font-size: 14px;
+    }
+}
+
